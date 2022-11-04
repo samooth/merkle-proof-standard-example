@@ -121,7 +121,7 @@ function getMerkleTreeParent (leftNode, rightNode) {
   const concat = Buffer.concat([leftConc, rightConc])
 
   // hash the concatenation
-  const hash = bsv.Hash.sha256sha256(concat)
+  const hash = bsv.Hash.sha256Sha256(concat)
 
   // swap endianness at the end and convert to hex string
   return swapEndianness(Buffer.from(hash, 'hex')).toString('hex')

@@ -213,7 +213,7 @@ function getMerkleTreeParent (leftBuffer, rightBuffer) {
   const concat = Buffer.concat([leftBuffer, rightBuffer])
 
   // hash the concatenation
-  return bsv.Hash.sha256sha256(concat)
+  return bsv.Hash.sha256Sha256(concat)
 }
 
 function extractMerkleRootFromBlockHeader (buffer) {
