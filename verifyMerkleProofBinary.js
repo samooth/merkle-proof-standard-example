@@ -1,5 +1,8 @@
 const bsv = require('bsv')
-const { swapEndianness } = require('buffer-swap-endianness')
+
+function swapEndianness(hashBuf){
+  new bsv.Br(hashBuf).readReverse()
+}
 
 function VerifyMerkleProof (data, mapHashToHeader) {
   let buffer
@@ -37,7 +40,7 @@ function VerifyMerkleProof (data, mapHashToHeader) {
   if (txLength === 32) {
     txHash = txBuffer
   } else {
-    const tx = new bsv.Transaction(txBuffer)
+    const tx = new bsv.Tx.fromBuffer(txBuffer)
     txHash = tx._getHash()
   }
 
@@ -183,7 +186,7 @@ function packObject (merkleProof, forcedFlagValues) {
     flags = flags | forcedFlagValues
   }
 
-  const writer = bsv.encoding.BufferWriter()
+  const writer = new bsv.Bw()
   writer.writeUInt8(flags)
   writer.writeVarintNum(merkleProof.index)
   if ((flags & 1) !== 0) {
@@ -210,7 +213,7 @@ function getMerkleTreeParent (leftBuffer, rightBuffer) {
   const concat = Buffer.concat([leftBuffer, rightBuffer])
 
   // hash the concatenation
-  return bsv.crypto.Hash.sha256sha256(concat)
+  return bsv.Hash.sha256sha256(concat)
 }
 
 function extractMerkleRootFromBlockHeader (buffer) {

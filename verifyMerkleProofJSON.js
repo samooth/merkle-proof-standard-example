@@ -1,5 +1,8 @@
 const bsv = require('bsv')
-const { swapEndianness } = require('buffer-swap-endianness')
+
+function swapEndianness(hashBuf){
+  new bsv.Br(hashBuf).readReverse()
+}
 
 function VerifyMerkleProof (merkleProof, mapHashToHeader) {
   // flags:
@@ -10,7 +13,7 @@ function VerifyMerkleProof (merkleProof, mapHashToHeader) {
     txid = merkleProof.txOrId
   } else if (merkleProof.txOrId.length > 64) {
     // The `txOrId` field contains a full transaction
-    const tx = new bsv.Transaction(merkleProof.txOrId)
+    const tx = new bsv.Tx(merkleProof.txOrId)
     txid = tx.id
   } else {
     throw new Error('invalid txOrId length - must be at least 64 chars (32 bytes)')
@@ -115,7 +118,7 @@ function getMerkleTreeParent (leftNode, rightNode) {
   const concat = Buffer.concat([leftConc, rightConc])
 
   // hash the concatenation
-  const hash = bsv.crypto.Hash.sha256sha256(concat)
+  const hash = bsv.Hash.sha256sha256(concat)
 
   // swap endianness at the end and convert to hex string
   return swapEndianness(Buffer.from(hash, 'hex')).toString('hex')
