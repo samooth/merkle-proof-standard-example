@@ -41,7 +41,7 @@ function VerifyMerkleProof (data, mapHashToHeader) {
     txHash = txBuffer
   } else {
     const tx = bsv.Tx.fromHex(txBuffer.toString("hex"))
-    txHash = tx._getHash()
+    txHash = tx.hash()
   }
 
   let targetLength = 32 // block hash (0x00) or merkle root (0x04)
