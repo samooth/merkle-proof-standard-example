@@ -1,7 +1,7 @@
 const bsv = require('bsv')
 
 function swapEndianness(hashBuf){
-  new bsv.Br(hashBuf).readReverse()
+  return new bsv.Br(hashBuf).readReverse()
 }
 
 function VerifyMerkleProof (data, mapHashToHeader) {
@@ -74,7 +74,6 @@ function VerifyMerkleProof (data, mapHashToHeader) {
 
   let nodeCount
   [nodeCount, bufferIndex] = readVarInt(buffer, bufferIndex)
-
   for (let i = 0; i < nodeCount; i = i + 1) {
     const nodeType = buffer.readUInt8(bufferIndex)
     bufferIndex = bufferIndex + 1
@@ -205,6 +204,7 @@ function packObject (merkleProof, forcedFlagValues) {
       writer.write(swapEndianness(Buffer.from(p, 'hex')))
     }
   })
+  console.log("Buffer:",writer.toBuffer())
   return writer.toBuffer()
 }
 

@@ -1,7 +1,7 @@
 const bsv = require('bsv')
 
 function swapEndianness(hashBuf){
-  new bsv.Br(hashBuf).readReverse()
+  return new bsv.Br(hashBuf).readReverse()
 }
 
 function VerifyMerkleProof (merkleProof, mapHashToHeader) {
@@ -14,12 +14,14 @@ function VerifyMerkleProof (merkleProof, mapHashToHeader) {
   } else if (merkleProof.txOrId.length > 64) {
     // The `txOrId` field contains a full transaction
     const tx = new bsv.Tx(merkleProof.txOrId)
-    txid = tx.id
+    txid = tx.id()
   } else {
     throw new Error('invalid txOrId length - must be at least 64 chars (32 bytes)')
   }
 
   let merkleRoot
+  console.log(merkleProof)
+
   if (!merkleProof.targetType || merkleProof.targetType === 'hash') {
     // The `target` field contains a block hash
 
@@ -33,6 +35,7 @@ function VerifyMerkleProof (merkleProof, mapHashToHeader) {
     // store of an SPV client or from a third party
     // provider like WhatsOnChain
     const header = mapHashToHeader[merkleProof.target]
+    console.log(header)
     if (!header) {
       throw new Error('block hash map to header not found in `mapHashToHeader`')
     }
