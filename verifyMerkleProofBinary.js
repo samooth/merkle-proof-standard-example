@@ -40,7 +40,7 @@ function VerifyMerkleProof (data, mapHashToHeader) {
   if (txLength === 32) {
     txHash = txBuffer
   } else {
-    const tx = new bsv.Tx.fromBuffer(txBuffer)
+    const tx = bsv.Tx.fromHex(txBuffer.toString("hex"))
     txHash = tx._getHash()
   }
 
