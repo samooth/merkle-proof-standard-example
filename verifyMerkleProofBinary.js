@@ -187,15 +187,15 @@ function packObject (merkleProof, forcedFlagValues) {
 
   const writer = new bsv.Bw()
   writer.writeUInt8(flags)
-  writer.writeVarintNum(merkleProof.index)
+  writer.writeVarIntNum(merkleProof.index)
   if ((flags & 1) !== 0) {
-    writer.writeVarintNum(txData.length)
+    writer.writeVarIntNum(txData.length)
   }
   writer.write(txData)
   writer.write(proofData)
 
   const nodeCount = merkleProof.nodes.length
-  writer.writeVarintNum(nodeCount)
+  writer.writeVarIntNum(nodeCount)
   merkleProof.nodes.forEach(p => {
     if (p === '*') {
       writer.writeUInt8(1)
